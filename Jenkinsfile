@@ -9,7 +9,7 @@ pipeline {
         }
         stage("commit"){
             steps {
-                git branch: 'master', url: 'https://github.com/ShubhamJangle8/DevopsIndustryPro1.git'
+                git branch: 'master', url: 'https://github.com/ShubhamJangle8/https://github.com/ShubhamJangle8/DevOpsClassCodes.git'
             }   
         }
         stage("clean"){
