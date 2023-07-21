@@ -1,60 +1,41 @@
+pipeline {
+    agent any
 
-pipeline{
-    tools{
-        jdk 'myjava'
-        maven 'mymaven'
+    stages {
+        stage("welcome msg"){
+            steps {
+                echo "Welcome to demo pipeline"
+            }
+        }
+        stage("commit"){
+            steps {
+                git branch: 'main', url: 'https://github.com/ShubhamJangle8/DevopsIndustryPro1.git'
+            }   
+        }
+        stage("clean"){
+            steps {
+                sh "mvn clean"
+            }
+        }
+        stage("compile"){
+            steps {
+                sh "mvn compile"
+            }
+        }
+        stage("package"){
+            steps {
+                sh "mvn package"
+            }
+        }
+        stage("deploy"){
+            steps {
+                sh "sudo cp /var/lib/jenkins/workspace/jenkinsPipeline/target/ABCtechnologies-1.0.war /usr/share/tomcat/webapps/"
+            }
+        }
+        stage("docker build"){
+            steps {
+                sh "docker build . -t image:latest"
+            }
+        }
     }
-	agent any
-      stages{
-           stage('Checkout'){
-	    
-               steps{
-		 echo 'cloning..'
-                 git 'https://github.com/Sonal0409/DevOpsClassCodes.git'
-              }
-          }
-          stage('Compile'){
-             
-              steps{
-                  echo 'compiling..'
-                  sh 'mvn compile'
-	      }
-          }
-          stage('CodeReview'){
-		  
-              steps{
-		    
-		  echo 'codeReview'
-                  sh 'mvn pmd:pmd'
-              }
-          }
-           stage('UnitTest'){
-		  
-              steps{
-	         echo 'Testing'
-                  sh 'mvn test'
-              }
-               post {
-               success {
-                   junit 'target/surefire-reports/*.xml'
-               }
-           }	
-          }
-           stage('MetricCheck'){
-              
-              steps{
-                  sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
-              }
-              
-          }
-          stage('Package'){
-		  
-              steps{
-		  
-                  sh 'mvn package'
-              }
-          }
-	     
-          
-      }
 }
